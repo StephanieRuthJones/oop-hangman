@@ -5,7 +5,7 @@ class Hangman {
             expected: "",
             guesses: guessCount,
             count: new Map(),
-        }
+        };
 
         for (const [pos, letter] of [...expected.toLowerCase().split("").entries()]) {
             const value = this._state.count.get(letter);
@@ -29,12 +29,8 @@ class Hangman {
     makeGuess(guess) {
         if (this._state.guesses <= 0) return;
 
-        const pos = this._state.count.get(guess);
-
-        if (pos !== undefined) {
-            for (const p of pos) {
-                this._state.expected = this._state.expected.substring(0, p) + guess + this._state.expected.substring(p + 1);
-            }
+        for (const p of (this._state.count.get(guess) || [])) {
+            this._state.expected = this._state.expected.substring(0, p) + guess + this._state.expected.substring(p + 1);
         }
 
         this._state.guesses--;
