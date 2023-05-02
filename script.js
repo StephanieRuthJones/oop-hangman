@@ -23,7 +23,7 @@ class Hangman {
     }
     // getStatusMessage() is a method that returns a string that represents the current status message of the game
     getStatusMessage() {
-        return `Remaining guesses: ${this._state.guesses}`;
+        return this._state.guesses;
     }
     // makeGuess(guess) is a method that takes a single letter as a parameter and updates the game state accordingly
     makeGuess(guess) {
@@ -50,8 +50,8 @@ class Hangman {
 const hangman = new Hangman("javascript", 10);
 // Define a function called render() that updates the puzzle and status paragraphs with their respective values from hangman.getPuzzle() and hangman.getStatusMessage()
 function render() {
-    document.querySelector("#status").textContent = hangman.getStatusMessage();
     document.querySelector("#puzzle").textContent = hangman.getPuzzle();
+    document.querySelector("#status").textContent = `Remaining guesses: ${hangman.getStatusMessage()}`;
 }
 // Call render() once at the beginning of your script to display the initial state of the game to the player
 render();
