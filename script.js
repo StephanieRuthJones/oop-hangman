@@ -2,24 +2,25 @@
 class Hangman {
     constructor(expected, guessCount) {
         this._state = {
-            expected: "",
+            actual: "",
+            expected: expected.toLowerCase(),
             guesses: guessCount,
             count: new Map(),
         };
 
-        for (const [pos, letter] of [...expected.toLowerCase().split("").entries()]) {
+        for (const [pos, letter] of [...this._state.expected.toLowerCase().split("").entries()]) {
             const value = this._state.count.get(letter);
             if (value !== undefined) {
                 value.push(pos);
             } else {
                 this._state.count.set(letter, [pos]);
             }
-            this._state.expected += "*";
+            this._state.actual += "*";
         }
     }
     // getPuzzle() is a method that returns a string that represents the current state of the puzzle
     getPuzzle() {
-        return this._state.expected;
+        return this._state.actual;
     }
     // getStatusMessage() is a method that returns a string that represents the current status message of the game
     getStatusMessage() {
@@ -30,7 +31,7 @@ class Hangman {
         if (this._state.guesses <= 0) return;
 
         for (const p of (this._state.count.get(guess) || [])) {
-            this._state.expected = this._state.expected.substring(0, p) + guess + this._state.expected.substring(p + 1);
+            this._state.actual = this._state.actual.substring(0, p) + guess + this._state.actual.substring(p + 1);
         }
 
         this._state.guesses--;
