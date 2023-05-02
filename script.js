@@ -1,45 +1,43 @@
 // Create a Hangman class that represents the game logic
 class Hangman {
     constructor(expected, guessCount) {
-        // this is a number
-        this.count = guessCount;
+        this._state = {
+            expected: "",
+            guesses: guessCount,
+            count: new Map(),
+        }
 
-        // this is a string
-        this.expected = "";
-
-        // this is a Map
-        this.state = new Map();
         for (const [pos, letter] of [...expected.toLowerCase().split("").entries()]) {
-            const value = this.state.get(letter);
+            const value = this._state.count.get(letter);
             if (value !== undefined) {
                 value.push(pos);
             } else {
-                this.state.set(letter, [pos]);
+                this._state.count.set(letter, [pos]);
             }
-            this.expected += "*";
+            this._state.expected += "*";
         }
     }
     // getPuzzle() is a method that returns a string that represents the current state of the puzzle
     getPuzzle() {
-        return this.expected;
+        return this._state.expected;
     }
     // getStatusMessage() is a method that returns a string that represents the current status message of the game
     getStatusMessage() {
-        return `Remaining guesses: ${this.count}`;
+        return `Remaining guesses: ${this._state.guesses}`;
     }
     // makeGuess(guess) is a method that takes a single letter as a parameter and updates the game state accordingly
     makeGuess(guess) {
-        if (this.count <= 0) return;
+        if (this._state.guesses <= 0) return;
 
-        const pos = this.state.get(guess);
+        const pos = this._state.count.get(guess);
 
         if (pos !== undefined) {
             for (const p of pos) {
-                this.expected = this.expected.substring(0, p) + guess + this.expected.substring(p + 1);
+                this._state.expected = this._state.expected.substring(0, p) + guess + this._state.expected.substring(p + 1);
             }
         }
 
-        this.count--;
+        this._state.guesses--;
     }
     // calculateStatus() is a method that updates the status property based on the current state of the game
     calculateStatus() {
