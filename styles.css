@@ -13,11 +13,19 @@ h1 {
 
 /* Make the puzzle paragraph bigger and bold */
 #puzzle {
-  color: blue;
+/* color: blue; */
   font-weight: bold;
 }
 
 /* Make the status paragraph green */
 #status {
+/* color: grey; */
+}
+
+.fail {
+    color: red;
+}
+
+.passed {
   color: green;
 }

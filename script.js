@@ -1,7 +1,8 @@
 // Create a Hangman class that represents the game logic
 class Hangman {
     constructor(expected, guessCount) {
-        // if (guessCount < expected.length) throw new Error("Guess count must be greater than or equal to the length of the expected word");
+        // check no special characters or numbers
+        if (expected.match(/[^a-z]/i)) throw new Error("Invalid word due to special characters or numbers");
 
         this._state = {
             actual: "",
@@ -22,7 +23,7 @@ class Hangman {
         }
 
         // throw error if guess count is less than the length of unique letters
-        if (this._state.guesses < this._state.count.size) throw new Error("Guess count must be greater than or equal to the length of the expected word");
+        if (this._state.guesses < this._state.count.size) throw new Error("Impossible game due to guess count being less than the length of unique letters");
     }
     // getPuzzle() is a method that returns a string that represents the current state of the puzzle
     getPuzzle() {
@@ -44,17 +45,33 @@ class Hangman {
     }
     // calculateStatus() is a method that updates the status property based on the current state of the game
     calculateStatus() {
-
+        // NOTE: unsure what this is supposed to do
     }
 }
 // Define a global variable called hangman and assign it to a new instance of Hangman with a random word and a fixed number of guesses
 // You can use any words you like, but make sure they are lowercase and have no special characters or numbers
 // You can also use any number of guesses you like, but make sure it is reasonable for the difficulty level of your words
 const hangman = new Hangman("javascript", 9);
+const puzzleEl = document.querySelector("#puzzle");
+const statusEl = document.querySelector("#status");
 // Define a function called render() that updates the puzzle and status paragraphs with their respective values from hangman.getPuzzle() and hangman.getStatusMessage()
 function render() {
-    document.querySelector("#puzzle").textContent = hangman.getPuzzle();
-    document.querySelector("#status").textContent = `Remaining guesses: ${hangman.getStatusMessage()}`;
+    const puzzle = hangman.getPuzzle();
+    const status = hangman.getStatusMessage();
+
+    puzzleEl.textContent = puzzle;
+    statusEl.textContent = `Remaining guesses: ${status}`;
+
+    if (!status) {
+        puzzleEl.classList.add("fail");
+        statusEl.classList.add("fail");
+    }
+
+    // if puzzle has no "*"
+    if (!puzzle.match(/\*/)) {
+        puzzleEl.classList.add("passed");
+        statusEl.classList.add("passed");
+    }
 }
 // Call render() once at the beginning of your script to display the initial state of the game to the player
 render();
