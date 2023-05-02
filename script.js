@@ -8,12 +8,12 @@ class Hangman {
             count: new Map(),
         };
 
-        for (const [pos, letter] of [...this._state.expected.toLowerCase().split("").entries()]) {
+        for (const [position, letter] of [...this._state.expected.toLowerCase().split("").entries()]) {
             const value = this._state.count.get(letter);
             if (value !== undefined) {
-                value.push(pos);
+                value.push(position);
             } else {
-                this._state.count.set(letter, [pos]);
+                this._state.count.set(letter, [position]);
             }
             this._state.actual += "*";
         }
@@ -30,8 +30,8 @@ class Hangman {
     makeGuess(guess) {
         if (this._state.guesses <= 0) return;
 
-        for (const p of (this._state.count.get(guess) || [])) {
-            this._state.actual = this._state.actual.substring(0, p) + guess + this._state.actual.substring(p + 1);
+        for (const position of (this._state.count.get(guess.toLowerCase()) || [])) {
+            this._state.actual = this._state.actual.substring(0, position) + guess.toLowerCase() + this._state.actual.substring(position + 1);
         }
 
         this._state.guesses--;
