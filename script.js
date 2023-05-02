@@ -1,6 +1,8 @@
 // Create a Hangman class that represents the game logic
 class Hangman {
     constructor(expected, guessCount) {
+        // if (guessCount < expected.length) throw new Error("Guess count must be greater than or equal to the length of the expected word");
+
         this._state = {
             actual: "",
             expected: expected.toLowerCase(),
@@ -9,6 +11,7 @@ class Hangman {
         };
 
         for (const [position, letter] of [...this._state.expected.toLowerCase().split("").entries()]) {
+            // NOTE: this could be done cleaner
             const value = this._state.count.get(letter);
             if (value !== undefined) {
                 value.push(position);
@@ -17,6 +20,9 @@ class Hangman {
             }
             this._state.actual += "*";
         }
+
+        // throw error if guess count is less than the length of unique letters
+        if (this._state.guesses < this._state.count.size) throw new Error("Guess count must be greater than or equal to the length of the expected word");
     }
     // getPuzzle() is a method that returns a string that represents the current state of the puzzle
     getPuzzle() {
@@ -44,7 +50,7 @@ class Hangman {
 // Define a global variable called hangman and assign it to a new instance of Hangman with a random word and a fixed number of guesses
 // You can use any words you like, but make sure they are lowercase and have no special characters or numbers
 // You can also use any number of guesses you like, but make sure it is reasonable for the difficulty level of your words
-const hangman = new Hangman("javascript", 10);
+const hangman = new Hangman("javascript", 9);
 // Define a function called render() that updates the puzzle and status paragraphs with their respective values from hangman.getPuzzle() and hangman.getStatusMessage()
 function render() {
     document.querySelector("#puzzle").textContent = hangman.getPuzzle();
